@@ -1,9 +1,11 @@
 pipeline {
     agent any
     stages {
-        stage('Build') {
+         stage('Build') {
             steps {
-                docker.build("storybook_sb")
+                script {
+                    docker.build("storybook_sb")
+                }
             }
         }
         stage('Test') {
@@ -13,19 +15,17 @@ pipeline {
         }
         stage('Deploy') {
             steps {
-                // Se connecter à Heroku
-                sh 'heroku login -i'
-                
-                // Ajouter le remote Heroku (si ce n'est pas déjà fait)
-                //sh 'git remote add heroku https://git.heroku.com/mon-app-heroku.git'
+               // Login à Heroku
+               sh 'docker login --username=$HEROKU_LOGIN --password=$HEROKU_API_KEY registry.heroku.com'
 
-                // Pousser sur Heroku pour déclencher le déploiement
-                sh 'git push heroku master'
+                // Taguer l'image Docker pour le registry Heroku
+                sh 'docker tag storybook_sb registry.heroku.com/storybooksbk/web'
 
-                // Vous pouvez aussi utiliser des commandes Heroku CLI pour gérer le déploiement
-                // Par exemple, pour déployer un conteneur Docker sur Heroku :
-                // sh 'heroku container:push web --app mon-app-heroku'
-                // sh 'heroku container:release web --app mon-app-heroku'
+                // Pousser l'image sur le registry Heroku
+                sh 'docker push registry.heroku.com/storybooksbk/web'
+
+                // Libérer l'image sur Heroku
+                sh 'heroku container:release web --app storybooksbk'
             }
         }
     }
