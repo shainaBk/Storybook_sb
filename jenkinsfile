@@ -10,22 +10,24 @@ pipeline {
         }
         stage('Test') {
             steps {
-                sh 'npm test'
+                script {
+                    bat 'npm test'
+                }
             }
         }
         stage('Deploy') {
             steps {
                // Login à Heroku
-               sh 'docker login --username=$HEROKU_LOGIN --password=$HEROKU_API_KEY registry.heroku.com'
+               bat 'docker login --username=$HEROKU_LOGIN --password=$HEROKU_API_KEY registry.heroku.com'
 
                 // Taguer l'image Docker pour le registry Heroku
-                sh 'docker tag storybook_sb registry.heroku.com/storybooksbk/web'
+                bat 'docker tag storybook_sb registry.heroku.com/storybooksbk/web'
 
                 // Pousser l'image sur le registry Heroku
-                sh 'docker push registry.heroku.com/storybooksbk/web'
+                bat 'docker push registry.heroku.com/storybooksbk/web'
 
                 // Libérer l'image sur Heroku
-                sh 'heroku container:release web --app storybooksbk'
+                bat 'heroku container:release web --app storybooksbk'
             }
         }
     }
