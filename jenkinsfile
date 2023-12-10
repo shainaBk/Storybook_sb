@@ -3,8 +3,7 @@ pipeline {
     stages {
         stage('Build') {
             steps {
-                sh 'npm install'
-                sh 'npm run build'
+                docker.build("storybook_sb")
             }
         }
         stage('Test') {
@@ -14,7 +13,19 @@ pipeline {
         }
         stage('Deploy') {
             steps {
-                // Ajoutez ici les étapes pour déployer sur Heroku
+                // Se connecter à Heroku
+                sh 'heroku login -i'
+                
+                // Ajouter le remote Heroku (si ce n'est pas déjà fait)
+                //sh 'git remote add heroku https://git.heroku.com/mon-app-heroku.git'
+
+                // Pousser sur Heroku pour déclencher le déploiement
+                sh 'git push heroku master'
+
+                // Vous pouvez aussi utiliser des commandes Heroku CLI pour gérer le déploiement
+                // Par exemple, pour déployer un conteneur Docker sur Heroku :
+                // sh 'heroku container:push web --app mon-app-heroku'
+                // sh 'heroku container:release web --app mon-app-heroku'
             }
         }
     }
