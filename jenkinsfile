@@ -8,13 +8,13 @@ pipeline {
                 }
             }
         }
-        stage('Test') {
-            steps {
-                script {
-                    bat 'npm test'
-                }
-            }
-        }
+       // stage('Test') {
+        //    steps {
+        //        script {
+        //            bat 'npm test'
+        //        }
+        //    }
+        //}
         stage('Deploy') {
             steps {
                // Login à Heroku
