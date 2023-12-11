@@ -1,4 +1,8 @@
 pipeline {
+    environment {
+        HEROKU_API_KEY = 'votre_clé_api_heroku',
+        HEROKU_LOGIN = ' '
+    }
     agent any
     stages {
          stage('Build') {
@@ -20,7 +24,7 @@ pipeline {
                 bat 'echo $HEROKU_API_KEY'
                 bat 'echo $HEROKU_LOGIN'
                // Login à Heroku
-               bat 'docker login --username=$HEROKU_LOGIN --password=$HEROKU_API_KEY registry.heroku.com'
+               bat 'docker login --username=shaina3322@gmail.com --password-stdin registry.heroku.com'
 
                 // Taguer l'image Docker pour le registry Heroku
                 bat 'docker tag storybook_sb registry.heroku.com/storybooksbk/web'
