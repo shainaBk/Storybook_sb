@@ -12,13 +12,14 @@ pipeline {
                 }
             }
         }
-       // stage('Test') {
-        //    steps {
-        //        script {
-        //            bat 'npm test'
-        //        }
-        //    }
-        //}
+       stage('Test Heroku CLI') {
+            steps {
+                script {
+                    // Sur Windows
+                    bat 'heroku --version'
+                }
+            }
+        }
         stage('Deploy') {
             steps {
                 bat 'echo %HEROKU_API_KEY%'
