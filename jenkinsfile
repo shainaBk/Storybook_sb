@@ -21,15 +21,10 @@ pipeline {
         //}
         stage('Deploy') {
             steps {
-                bat 'echo $HEROKU_API_KEY'
-                bat 'echo $HEROKU_LOGIN'
+                bat 'echo %HEROKU_API_KEY%'
+                bat 'echo %HEROKU_LOGIN%'
                // Login à Heroku
-                bat 'heroku login -i'
-                // Ajouter le remote Heroku (si ce n'est pas déjà fait)
-                bat 'git remote add heroku https://git.heroku.com/storybooksbk'
-
-                // Pousser sur Heroku pour déclencher le déploiement
-                bat 'git push heroku master'
+                bat 'docker login --username=%HEROKU_LOGIN% --password=%HEROKU_API_KEY% registry.heroku.com'
 
                 // Taguer l'image Docker pour le registry Heroku
                 bat 'docker tag storybook_sb registry.heroku.com/storybooksbk/web'
