@@ -1,7 +1,7 @@
 pipeline {
     agent any
     environment {
-        HEROKU_API_KEY = '480fb0de-15fe-4837-9a45-b877aba4dc4e',
+        HEROKU_API_KEY = '480fb0de-15fe-4837-9a45-b877aba4dc4e'
         HEROKU_LOGIN = 'shaina3322@gmail.com'
     }
     stages {
